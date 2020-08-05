@@ -1,0 +1,2 @@
+class GifterController < ApplicationController
+end

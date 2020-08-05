@@ -1,0 +1,17 @@
+<%= render 'shared/navbar' %>
+<%= link_to "Se déconnecter", destroy_user_session_path, method: :delete %>
+
+<%= simple_form_for Pool.new, remote: true do |f| %>
+  <%= f.input :name, label: false, placeholder: 'Nom' %>
+  <%= f.submit "Créer" %>
+<% end %>
+
+<h2>Liste de tous vos secret santas</h2>
+<ul>
+  <% current_user.pools.each do |pool| %>
+    <%= link_to pool_path(pool) do %>
+      <li style="list-style: none;"><%= pool.name %></li>
+    <% end %>
+  <% end %>
+</ul>
+
