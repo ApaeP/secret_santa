@@ -3,6 +3,7 @@
 
 <%= simple_form_for Pool.new, remote: true do |f| %>
   <%= f.input :name, label: false, placeholder: 'Nom' %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <%= f.submit "Créer" %>
 <% end %>
 

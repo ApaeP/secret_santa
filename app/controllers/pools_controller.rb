@@ -1,11 +1,13 @@
 class PoolsController < ApplicationController
 
   def show
+    @participant = Participant.new
     @pool = Pool.find(params[:id])
+    @participants = Participant.where(pool: @pool)
   end
 
   def new
-    @pool = Pool.new(user: current_user)
+    @pool = Pool.new
   end
 
   def create
