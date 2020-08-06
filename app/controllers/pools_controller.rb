@@ -2,7 +2,9 @@ class PoolsController < ApplicationController
 
   def show
     @participant = Participant.new
+    @draw = Draw.new
     @pool = Pool.find(params[:id])
+    @draws = Draw.where(pool: @pool)
     @participants = Participant.where(pool: @pool)
   end
 

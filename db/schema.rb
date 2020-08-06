@@ -53,9 +53,11 @@ ActiveRecord::Schema.define(version: 2020_08_03_144419) do
   create_table "receivers", force: :cascade do |t|
     t.bigint "draw_id", null: false
     t.bigint "participant_id", null: false
+    t.bigint "gifter_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["draw_id"], name: "index_receivers_on_draw_id"
+    t.index ["gifter_id"], name: "index_receivers_on_gifter_id"
     t.index ["participant_id"], name: "index_receivers_on_participant_id"
   end
 
@@ -80,5 +82,6 @@ ActiveRecord::Schema.define(version: 2020_08_03_144419) do
   add_foreign_key "participants", "pools"
   add_foreign_key "pools", "users"
   add_foreign_key "receivers", "draws"
+  add_foreign_key "receivers", "gifters"
   add_foreign_key "receivers", "participants"
 end

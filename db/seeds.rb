@@ -33,17 +33,17 @@ puts "           SEEDING DATABASE\n "
         email: "#{tfn.downcase}.#{tln.downcase}@test.com")
     end
 
-  puts "            - Create draw(s)"
-    2.times do
-      Draw.create!(
-        pool: pool_1)
-    end
+  # puts "            - Create draw(s)"
+  #   2.times do
+  #     Draw.create!(
+  #       pool: pool_1)
+  #   end
 
-  puts "            - Create gifter(s) & receiver(s)"
-    Draw.last.pool.participants.each do |participant|
-      Gifter.create!(draw: Draw.last, participant: participant)
-      Receiver.create(draw: Draw.last, participant: participant)
-    end
+  # puts "            - Create gifter(s) & receiver(s)"
+  #   Draw.last.pool.participants.each do |participant|
+  #     Gifter.create!(draw: Draw.last, participant: participant)
+  #     Receiver.create(draw: Draw.last, participant: participant)
+  #   end
 
 puts "\n            DATABASE SEEDED"
 puts "    --------------------------------\n \n "
