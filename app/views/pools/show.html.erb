@@ -2,7 +2,13 @@
 
 <ol>
   <% @participants.each do |p| %>
-    <li><%= p.first_name %></li>
+    <li>
+      <% if p.companion_id? %>
+        <p><%= p.first_name %> <%= p.last_name %> maqué avec <%= Participant.find(p.companion_id).first_name %> <%= Participant.find(p.companion_id).last_name %></p>
+      <% else %>
+        <p><%= p.first_name %> <%= p.last_name %></p>
+      <% end %>
+    </li>
   <% end %>
 </ol>
 
@@ -10,6 +16,8 @@
   <%= f.input :first_name, placeholder: "Prénom", label: false %>
   <%= f.input :last_name, placeholder: "Nom", label: false %>
   <%= f.input :email, placeholder: "Email", label: false %>
+  <%#= f.input :companion_id, as: :collection, placeholder: "Conjoint", label: false %>
+  <%= f.input :companion_id, collection: @participants, label_method: :first_name, value_method: :id, :label => "Conjoint", include_blank: true%>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <%= f.submit 'Ajouter le participant' %>
 <% end %>
