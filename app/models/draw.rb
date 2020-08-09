@@ -6,15 +6,28 @@ class Draw < ApplicationRecord
 
   after_create :create_gifters_and_receivers
 
-  def associate_participants(gifters_arr, receivers_arr)
-    count = receivers_arr.length
-    gifters_arr.each do |gifter|
-      random = rand(count)
-      receiver = receivers_arr[random]
-      receivers_arr.delete_at(random)
-      count -= 1
-      receiver.gifter = gifter
-      receiver.save
+  private
+
+  def single_association(gifter, participants_array, to_avoid)
+    array = participants_array.except(to_avoid)
+    participant_to_associate = array[rand(array.count)]
+    # \/ The line below raises a "NoMethodError (undefined method `id' for nil:NilClass)" 5% of the time.
+    # But [self, participant_to_associate, gifter].include?(nil) always return false... WHY?
+    Receiver.create(draw_id: self.id, participant_id: participant_to_associate.id, gifter_id: gifter.id)
+    participants_array.delete(participant_to_associate)
+  end
+
+  def associate_gifters_and_receivers(gifters)
+    p_arr = []
+    self.pool.participants.each { |p| p_arr << p }
+    gifters.each do |gifter|
+      if gifter.participant.companion_id.nil?
+        to_avoid = Participant.find(gifter.participant.id)
+        single_association(gifter, p_arr, to_avoid)
+      else
+        to_avoid = [Participant.find(gifter.participant.id), Participant.find(gifter.participant.companion_id)]
+        single_association(gifter, p_arr, to_avoid)
+      end
     end
   end
 
@@ -23,8 +36,8 @@ class Draw < ApplicationRecord
     r_arr = []
     self.pool.participants.each do |part|
       g_arr << Gifter.create(draw_id: self.id, participant_id: part.id)
-      r_arr << Receiver.new(draw_id: self.id, participant_id: part.id)
+      # r_arr << Receiver.create(draw_id: self.id, participant_id: part.id)
     end
-    associate_participants(g_arr, r_arr)
+    associate_gifters_and_receivers(g_arr)
   end
 end

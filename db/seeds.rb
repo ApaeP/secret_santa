@@ -25,15 +25,27 @@ puts "           SEEDING DATABASE\n "
     pool_2 = Pool.create!(user: main_user, name: "Noël 2021")
 
   puts "            - Create participant(s)"
-    12.times do
-      tfn = Faker::Name.first_name
-      tln = Faker::Name.last_name
+    alphabet = ('A'..'Z').to_a
+    i = 0
+    10.times do
       Participant.create!(
         pool: pool_1,
-        first_name: tfn,
-        last_name: tln,
-        email: "#{tfn.downcase}.#{tln.downcase}@test.com")
+        first_name: "#{alphabet[i]*3}",
+        last_name: "#{alphabet[i]*3}",
+        email: "#{alphabet[i]*3}@test.com")
+      i += 1
     end
+
+
+    # 12.times do
+    #   tfn = Faker::Name.first_name
+    #   tln = Faker::Name.last_name
+    #   Participant.create!(
+    #     pool: pool_1,
+    #     first_name: tfn,
+    #     last_name: tln,
+    #     email: "#{tfn.downcase}.#{tln.downcase}@test.com")
+    # end
 
 puts "\n            DATABASE SEEDED"
 puts "    --------------------------------\n \n "

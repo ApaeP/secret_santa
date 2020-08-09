@@ -16,7 +16,6 @@
   <%= f.input :first_name, placeholder: "Prénom", label: false %>
   <%= f.input :last_name, placeholder: "Nom", label: false %>
   <%= f.input :email, placeholder: "Email", label: false %>
-  <%#= f.input :companion_id, as: :collection, placeholder: "Conjoint", label: false %>
   <%= f.input :companion_id, collection: @participants, label_method: :first_name, value_method: :id, :label => "Conjoint", include_blank: true%>
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <%= f.submit 'Ajouter le participant' %>
@@ -27,18 +26,24 @@
   <%= f.submit "Créer un tirage" %>
 <% end %>
 
-<h2>Les tirages</h2>
+<h2>Les tirages (<%= @pool.draws.length %>)</h2>
 
 <ul>
   <% @draws.each do |draw| %>
     <li>
-      <ul>
+      <ol>
+        <p>nombre de gifters : <%= draw.gifters.count %></p>
+        <p>nombre de receivers : <%= draw.receivers.count %></p>
         <% draw.gifters.each do |gifter| %>
           <li>
-            <p><%= gifter.participant.first_name %> offre à <%= gifter.receiver.participant.first_name %></p>
+            <% if gifter.receiver.nil? %>
+              <p><%= gifter.participant.first_name %> offre à apparemment personne</p>
+            <% else %>
+              <p><%= gifter.participant.first_name %> offre à <%= gifter.receiver.participant.first_name %></p>
+            <% end %>
           </li>
         <% end %>
-      </ul>
+      </ol>
     </li>
   <% end %>
 </ul>

@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_144419) do
   create_table "receivers", force: :cascade do |t|
     t.bigint "draw_id", null: false
     t.bigint "participant_id", null: false
-    t.bigint "gifter_id", null: false
+    t.bigint "gifter_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["draw_id"], name: "index_receivers_on_draw_id"
