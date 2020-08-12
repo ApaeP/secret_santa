@@ -1,0 +1,224 @@
+<head>
+
+</head>
+<body style="margin: 0;">
+
+  <%= link_to 'injection de modele', pool_participant_inject_model_path(Pool.first, Participant.last), remote: true %>
+
+  <h1>Modal form</h1>
+
+
+  <h2 style="text-align: center; cursor: pointer; font-size: 1rem; padding: 1vw 2vh; border: 1px solid black; border-radius: 3px; width: 250px; margin: 1vh auto;" id="simple-modal-btn">Simple modal</h2>
+  <!-- SIMPLE MODAL -->
+    <div class="simple-modal-background modal-hidden-first">
+      <div class="simple-modal-container">
+        <div class="close-simple-modal-container">
+          <p class="close-simple-modal-btn"><i class="far fa-times-circle close-simple-modal-i"></i></p>
+        </div>
+        <div class="simple-modal-content">
+          <h1>CONTENT FOR SIMPLE MODAL</h1>
+        </div>
+      </div>
+    </div>
+  <!-- SIMPLE MODAL -->
+
+<% i = 1 %>
+  <h2 style="text-align: center; cursor: pointer; font-size: 1rem; padding: 1vw 2vh; border: 1px solid black; border-radius: 3px; width: 250px; margin: 1vh auto;" class="iteration-modal-button" data-modalid="<%= i %>">Modal for iteration</h2>
+<!-- ITERATION MODAL -->
+    <div class="iteration-modal-background modal-hidden-first" id="iteration-id-<%= i %>">
+      <div class="iteration-modal-container">
+        <div class="close-iteration-modal-container">
+          <p class="close-iteration-modal-btn" id="close-iteration-modal-<%= i %>"><i class="far fa-times-circle close-iteration-modal-i"></i></p>
+        </div>
+        <div class="iteration-modal-content">
+          <h1>CONTENT FOR ITERATION MODAL</h1>
+        </div>
+      </div>
+    </div>
+<!-- ITERATION MODAL -->
+
+
+</body>
+
+
+
+<script>
+  const openCloseSimpleModal = () => {
+    if (document.querySelector('#simple-modal-btn')) {
+      const simpleModalButton = document.querySelector('#simple-modal-btn');
+      const simpleModal = document.querySelector('.simple-modal-background');
+
+      // OPEN
+      simpleModalButton.addEventListener('click', (event) => {
+
+        if (simpleModal.classList.contains('modal-hidden-first')) {
+          simpleModal.classList.remove('modal-hidden-first')
+          simpleModal.classList.toggle('modal-visible');
+        } else {
+          simpleModal.classList.toggle('modal-hidden');
+          simpleModal.classList.toggle('modal-visible');
+        }
+
+      }); // End of OPEN
+
+      // CLOSE
+      document.querySelector('.close-simple-modal-btn').addEventListener('click', (event) => {
+        simpleModal.classList.toggle('modal-hidden');
+        simpleModal.classList.toggle('modal-visible');
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && simpleModal.classList.contains('modal-visible')) {
+          simpleModal.classList.toggle('modal-hidden');
+          simpleModal.classList.toggle('modal-visible');
+        }
+      });
+
+      document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('close-simple-modal-btn') || event.target.classList.contains('close-simple-modal-btn-i') || event.target.classList.contains('close-simple-modal-container') || event.target.classList.contains('simple-modal-background')) {
+          const openedAddModal = document.querySelector('.simple-modal-background.modal-visible');
+          openedAddModal.classList.toggle('modal-hidden');
+          openedAddModal.classList.toggle('modal-visible');
+        }
+      });
+    }
+  };
+
+  const openCloseIterationModal = () => {
+
+    document.querySelector('html').addEventListener('click', (event) => {
+      if (event.target.classList.contains('iteration-modal-button')) {
+        if (document.querySelector(`#iteration-id-${event.target.dataset.modalid}`).classList.contains('modal-hidden-first')) {
+          document.querySelector(`#iteration-id-${event.target.dataset.modalid}`).classList.remove('modal-hidden-first');
+          document.querySelector(`#iteration-id-${event.target.dataset.modalid}`).classList.toggle('modal-visible');
+        } else {
+          document.querySelector(`#iteration-id-${event.target.dataset.modalid}`).classList.toggle('modal-hidden');
+          document.querySelector(`#iteration-id-${event.target.dataset.modalid}`).classList.toggle('modal-visible');
+        }
+      } else if (event.target.classList.contains('close-iteration-modal-btn') || event.target.classList.contains('close-iteration-modal-i') || event.target.classList.contains('iteration-modal-background')) {
+        const openedIterationModal = document.querySelector('.iteration-modal-background.modal-visible');
+        openedIterationModal.classList.toggle('modal-hidden');
+        openedIterationModal.classList.toggle('modal-visible');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && document.querySelector('.iteration-modal-background.modal-visible')) {
+        // const openedIterationModal = document.querySelector('.iteration-modal-background.modal-visible');
+        document.querySelector('.iteration-modal-background.modal-visible').classList.toggle('modal-hidden');
+        document.querySelector('.iteration-modal-background.modal-visible').classList.toggle('modal-visible');
+      }
+    });
+  };
+
+  openCloseSimpleModal();
+  openCloseIterationModal();
+</script>
+
+
+
+<style>
+  .modal-hidden-first {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .modal-hidden {
+    transition: opacity 0.7s ease, visibility 0.7s;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .modal-visible {
+    transition: visibility 0s, opacity 0.7s ease;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /*SIMPLE MODAL STYLE*/
+    @media (max-width:800px) {
+      .simple-modal-container {
+        margin: 2vh 2vh;
+        padding: 1vh;
+      }
+      .simple-modal-content {
+        padding: 2vh;
+      }
+    }
+
+    @media (min-width:801px) {
+      .simple-modal-container {
+        margin: 10vh 20vh;
+        padding: 2vh;
+      }
+      .simple-modal-content {
+        padding: 5vh 10vh 10vh 10vh;
+      }
+    }
+
+    .simple-modal-background {
+      position: fixed;
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      z-index: 50;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .simple-modal-container {
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .close-simple-modal-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .close-simple-modal-btn {
+      display: flex;
+      justify-content: flex-end;
+      height: 38px;
+      position: relative;
+      flex-direction: column;
+      width: 38px;
+      text-align: center;
+      p {
+        padding: 5px 15px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin: 0;
+        z-index: 1000;
+      }
+    }
+
+    .close-simple-modal-i {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+    }
+  /*SIMPLE MODAL STYLE*/
+
+  /*ITERATION MODAL STYLE*/
+  .iteration-modal-background {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .iteration-modal-container {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+  /*ITERATION MODAL STYLE*/
+</style>

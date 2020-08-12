@@ -1,12 +1,15 @@
 class Participant < ApplicationRecord
   belongs_to :pool
-  has_many :gifters
-  has_many :receivers
+  # has_many :gifters, through: :pool, source: :draws, dependent: :destroy
+  has_many :receivers, dependent: :destroy
+  has_many :gifters, dependent: :destroy
+  # has_many :receivers, through: :pool, source: :draws, dependent: :destroy
+  has_many :draws, through: :pool, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  after_create :associate_companion_if_present
+  after_save :associate_companion_if_present
 
   def associate_companion_if_present
     # puts "\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n"

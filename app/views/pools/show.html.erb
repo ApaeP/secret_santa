@@ -1,16 +1,18 @@
 <%= @pool.name %>
 
-<ol>
+<ul>
   <% @participants.each do |p| %>
     <li>
       <% if p.companion_id? %>
-        <p><%= p.first_name %> <%= p.last_name %> maqué avec <%= Participant.find(p.companion_id).first_name %> <%= Participant.find(p.companion_id).last_name %></p>
+        <p style="margin: 1vh 0 0 0;">n°<%= p.id %> - <%= p.first_name %> <%= p.last_name %> maqué avec n°<%= p.companion_id %></p>
       <% else %>
-        <p><%= p.first_name %> <%= p.last_name %></p>
+        <p style="margin: 1vh 0 0 0;">n°<%= p.id %> - <%= p.first_name %> <%= p.last_name %></p>
       <% end %>
+      <%= link_to 'edit', pool_participant_inject_model_path(@pool, p), remote: true, class: 'simple-modal-btn' %>
+      <%= link_to "destroy", pool_participant_path(@pool, p), method: :delete, remote: true %>
     </li>
   <% end %>
-</ol>
+</ul>
 
 <%= simple_form_for [@pool, @participant], remote: true do |f| %>
   <%= f.input :first_name, placeholder: "Prénom", label: false %>
@@ -48,3 +50,16 @@
   <% end %>
 </ul>
 
+
+<!-- SIMPLE MODAL -->
+  <div class="simple-modal-background modal-hidden-first">
+    <div class="simple-modal-container">
+      <div class="close-simple-modal-container">
+        <p class="close-simple-modal-btn"><i class="far fa-times-circle close-simple-modal-i"></i></p>
+      </div>
+      <div class="simple-modal-content">
+
+      </div>
+    </div>
+  </div>
+<!-- SIMPLE MODAL -->

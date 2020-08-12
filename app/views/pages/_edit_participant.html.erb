@@ -1,0 +1,9 @@
+<h3>Modifier le participant <%= participant.first_name %></h3>
+<%= simple_form_for [pool, participant], remote: true do |f| %>
+  <%= f.input :first_name, placeholder: "Prénom", label: false %>
+  <%= f.input :last_name, placeholder: "Nom", label: false %>
+  <%= f.input :email, placeholder: "Email", label: false %>
+  <%= f.input :companion_id, collection: participants, label_method: :first_name, value_method: :id, :label => "Conjoint", include_blank: true%>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <%= f.submit 'Ajouter le participant' %>
+<% end %>
