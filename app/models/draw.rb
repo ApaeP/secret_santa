@@ -36,7 +36,6 @@ class Draw < ApplicationRecord
     r_arr = []
     self.pool.participants.each do |part|
       g_arr << Gifter.create(draw_id: self.id, participant_id: part.id)
-      # r_arr << Receiver.create(draw_id: self.id, participant_id: part.id)
     end
     associate_gifters_and_receivers(g_arr)
   end

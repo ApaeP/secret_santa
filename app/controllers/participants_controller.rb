@@ -1,5 +1,5 @@
 class ParticipantsController < ApplicationController
-  # before_action :set_participant, only: [:edit, :update]
+  before_action :set_participant, only: [:edit, :update, :destroy]
 
   def new
     @participant = Participant.new
@@ -13,15 +13,6 @@ class ParticipantsController < ApplicationController
     redirect_to pool_path(@pool)
   end
 
-  def destroy
-    @participant = Participant.find(params[:id])
-    pool = @participant.pool
-    # @participant.gifters.destroy
-    # @participant.receivers.destroy
-    @participant.destroy
-    redirect_to pool_path(pool)
-  end
-
   def edit
     @participant = Participant.find(params[:id])
   end
@@ -32,10 +23,17 @@ class ParticipantsController < ApplicationController
     redirect_to pool_path(@participant.pool)
   end
 
+  def destroy
+    @participant = Participant.find(params[:id])
+    pool = @participant.pool
+    @participant.destroy
+    redirect_to pool_path(pool)
+  end
+
   private
 
   def set_participant
-    @participant = Participant.find(params[:participant_id])
+    @participant = Participant.find(params[:id])
   end
 
   def participant_params

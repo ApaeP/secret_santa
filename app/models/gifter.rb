@@ -1,5 +1,5 @@
 class Gifter < ApplicationRecord
   belongs_to :draw
   belongs_to :participant
-  has_one :receiver
+  has_one :receiver, dependent: :destroy
 end
